@@ -1,0 +1,13 @@
+<p class='lead'>
+  You can redeem free tickets for these shows with your Ticketmaster settlement vouchers.
+  <a href='/about'>Learn More</a>.
+</p>
+<%= react_component('Home')%>
+<div class='row'>
+  <div class='col-xs-12'>
+    <div class='small'>
+      Last Update: <%= @last_run.created_at.in_time_zone('America/New_York') %>
+    </div>
+  </div>
+</div>
+<%= javascript_tag("window.EVENTS = #{@events.to_json}") %>

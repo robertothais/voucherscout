@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <%= display_meta_tags site: Rails.application.config.app_name %>
+  <% if ENV['SENTRY_PUBLIC_DSN'] %>
+    <%= javascript_tag "window['SENTRY_PUBLIC_DSN']='#{ENV['SENTRY_PUBLIC_DSN']}'" %>
+  <% end %>
+  <%= stylesheet_link_tag    'application', media: 'all' %>
+  <%= javascript_include_tag 'application' %>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_MAPS_API_KEY']%>" type="text/javascript"></script>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <%= react_component('Navbar', {title: Rails.application.config.app_name})%>
+  <div class='container'><%= yield %></div>
+  <footer class="footer">
+    <div class="container">
+    <p class="text-muted">
+      ©<%= Time.now.year %> Roberto Thais.
+      <a href='https://twitter.com/robertothais'>Twitter.</a>
+      <a href='mailto:roberto@argand.io'>Contact.</a>
+      <br/>
+      Made in NYC <i class='glyphicon glyphicon-heart'></i></p>
+    </div>
+  </footer>
+</body>
+</html>

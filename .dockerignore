@@ -1,0 +1,8 @@
+.git
+.env
+.dockerignore
+public/assets
+.byebug_history
+log/*
+node_modules/*
+tmp/*

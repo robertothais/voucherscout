@@ -1,0 +1,51 @@
+version: '2'
+volumes:
+  mongo-data:
+    driver: local
+
+services:
+  mongo:
+    image: mongo:3.2.6
+    restart: always
+    volumes:
+      - mongo-data:/data/db
+    expose:
+      - '27017'
+
+  tor:
+    image: andreas4all/tor-client
+    restart: always
+    environment:
+      - PASSWORD=cy3cBvrrstfpZVg
+    expose:
+      - "9050"
+      - "9051"
+
+  eventsynchronizer:
+    build: .
+    command: bundle exec rake events:synchronize
+    restart: always
+    env_file: .env.docker
+    depends_on:
+      - mongo
+      - tor
+
+  web:
+    build: .
+    command: bundle exec puma -C config/puma.rb
+    restart: always
+    env_file: .env.docker
+    expose:
+      - "3000"
+    depends_on:
+      - mongo
+
+  lb:
+      image: dockercloud/haproxy
+      restart: always
+      links:
+        - web
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      ports:
+        - 80:80
